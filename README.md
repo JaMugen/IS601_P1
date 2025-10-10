@@ -228,7 +228,32 @@ Then submit the GitHub repository link as instructed.
 
 ---
 
-# 8. REPL Scenario
+# 8. Eviroment configuration
+
+To change calculator default configurations setup an enviroment file. The enviroment file is called .env. Values that can be set are shown in the following example.
+
+```env
+# Location of the calculator directory.
+CALCULATOR_BASE_DIR=/path/to/project/root
+
+# Maximum number of history entries (positive integer)
+CALCULATOR_MAX_HISTORY_SIZE=1000
+
+# Auto-save history on exit or operation (true/false)
+CALCULATOR_AUTO_SAVE=true
+
+# Decimal precision for calculations (positive integer)
+CALCULATOR_PRECISION=10
+
+# Maximum allowable input value (a decimal string)
+CALCULATOR_MAX_INPUT_VALUE=1e999
+
+# Default encoding for file operations
+CALCULATOR_DEFAULT_ENCODING=utf-8
+
+```
+---
+# 9. REPL Scenario
 
 ```
 Calculator started. Type 'help' for commands.
