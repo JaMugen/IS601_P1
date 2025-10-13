@@ -64,8 +64,12 @@ class Calculation:
             "Root": lambda x, y: (
                 Decimal(pow(float(x), 1 / float(y))) 
                 if x >= 0 and y != 0 
-                else self._raise_invalid_root(x, y)
-            )
+                else self._raise_invalid_root(x, y)),
+            "Modulus": lambda x, y: x % y if y != 0 else self._raise_mod_zero(),
+            "Int_Divide": lambda x, y: x // y if y != 0 else self._raise_int_div_zero(),
+            "Percent": lambda x, y: (x / y) * 100 if y != 0 else self._raise_percent_zero(),
+            "Abs_Diff": lambda x, y: abs(x - y)
+
         }
 
         # Retrieve the operation function based on the operation name
@@ -89,6 +93,33 @@ class Calculation:
         """
         raise OperationError("Division by zero is not allowed")
 
+    @staticmethod
+    def _raise_mod_zero():  # pragma: no cover
+        """
+        Helper method to raise modulus by zero error.
+
+        This method is called when a modulus by zero is attempted.
+        """
+        raise OperationError("Modulus by zero is not allowed")  
+    
+    @staticmethod
+    def _raise_int_div_zero():  # pragma: no cover
+        """
+        Helper method to raise integer division by zero error.
+
+        This method is called when an integer division by zero is attempted.
+        """
+        raise OperationError("Integer division by zero is not allowed")
+    
+    @staticmethod
+    def _raise_percent_zero():  # pragma: no cover
+        """
+        Helper method to raise percentage by zero error.
+
+        This method is called when a percentage calculation with zero as the denominator is attempted.
+        """
+        raise OperationError("Percentage calculation with zero denominator is not allowed")
+    
     @staticmethod
     def _raise_neg_power():  # pragma: no cover
         """
