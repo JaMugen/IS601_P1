@@ -2,6 +2,7 @@ from ast import ExceptHandler
 import datetime
 from pathlib import Path
 from sqlite3 import Time
+from unittest import mock
 import pandas as pd
 import pytest
 from unittest.mock import Mock, patch, PropertyMock
@@ -331,6 +332,14 @@ def test_calculator_repl_clear_history(mock_print, mock_input):
 def test_calculator_repl_help(mock_print, mock_input):
     calculator_repl()
     mock_print.assert_any_call("\nAvailable commands:")
+    mock_print.assert_any_call("  add, subtract, multiply, divide, power, root, modulus, int_divide, percent, abs_diff  - Perform calculations")
+    mock_print.assert_any_call("  history - Show calculation history")
+    mock_print.assert_any_call("  clear - Clear calculation history")
+    mock_print.assert_any_call("  undo - Undo the last calculation")
+    mock_print.assert_any_call("  redo - Redo the last undone calculation")
+    mock_print.assert_any_call("  save - Save calculation history to file")
+    mock_print.assert_any_call("  load - Load calculation history from file")
+    mock_print.assert_any_call("  exit - Exit the calculator")
 
 @patch('builtins.input', side_effect=['redo', 'exit'])
 @patch('builtins.print')
