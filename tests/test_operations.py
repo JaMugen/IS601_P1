@@ -1,9 +1,11 @@
+from ast import In
 import pytest
 from decimal import Decimal
 from typing import Any, Dict, Type
 
 from app.exceptions import ValidationError
 from app.operations import (
+    Modulus,
     Operation,
     Addition,
     Subtraction,
@@ -11,6 +13,9 @@ from app.operations import (
     Division,
     Power,
     Root,
+    Int_Divide,
+    Abs_Diff,
+    Percent,
     OperationFactory,
 )
 
@@ -181,6 +186,76 @@ class TestRoot(BaseOperationTest):
         },
     }
 
+class TestModulus(BaseOperationTest):
+    """Test Modulus operation."""
+
+    operation_class = Modulus  # Assuming Modulus class is not implemented yet
+    valid_test_cases = {
+        "positive_numbers": {"a": "5", "b": "3", "expected": "2"},
+        "negative_numbers": {"a": "-5", "b": "-3", "expected": "-2"},
+        "mixed_signs": {"a": "-5", "b": "3", "expected": "-2"},
+        "zero_dividend": {"a": "0", "b": "5", "expected": "0"},
+        "decimals": {"a": "5.5", "b": "2", "expected": "1.5"},
+    }
+    invalid_test_cases = {
+        "modulus_by_zero": {
+            "a": "5",
+            "b": "0",
+            "error": ValidationError,
+            "message": "Modulus by zero is not allowed"
+        }
+    }
+
+class TestInt_Divide(BaseOperationTest):
+    """Test Integer Division operation."""
+
+    operation_class = Int_Divide  # Assuming Int_Divide class is not implemented yet
+    valid_test_cases = {
+        "positive_numbers": {"a": "5", "b": "2", "expected": "2"},
+        "negative_numbers": {"a": "-5", "b": "-2", "expected": "2"},
+        "mixed_signs": {"a": "-5", "b": "2", "expected": "-2"},
+        "zero_dividend": {"a": "0", "b": "5", "expected": "0"},
+        "decimals": {"a": "5.5", "b": "2", "expected": "2"},
+    }
+    invalid_test_cases = {
+        "int_divide_by_zero": {
+            "a": "5",
+            "b": "0",
+            "error": ValidationError,
+            "message": "Integer division by zero is not allowed"
+        }
+    }
+
+class TestPercent(BaseOperationTest):
+    """Test Percent operation."""
+
+    operation_class = Percent  # Assuming Percent class is not implemented yet
+    valid_test_cases = {
+        "whole_number": {"a": "50", "b": "200", "expected": "25"},
+        "decimal_number": {"a": "12.5", "b": "80", "expected": "15.625"},
+        "zero_percent": {"a": "0", "b": "100", "expected": "0"},
+        "hundred_percent": {"a": "50", "b": "50", "expected": "100"},
+    }
+    invalid_test_cases = {
+        "negative_percent": {
+            "a": "100",
+            "b": "0",
+            "error": ValidationError,
+            "message": "Percentage cannot be calculated with zero base value"
+        }
+    }   
+
+class TestAbs_Diff(BaseOperationTest):
+    """Test Absolute Difference operation."""
+    operation_class = Abs_Diff  # Assuming Abs_Diff class is not implemented yet
+    valid_test_cases = {
+        "positive_numbers": {"a": "5", "b": "3", "expected": "2"},
+        "negative_numbers": {"a": "-5", "b": "-3", "expected": "2"},
+        "mixed_signs": {"a": "-5", "b": "3", "expected": "8"},
+        "zero_difference": {"a": "5", "b": "5", "expected": "0"},
+        "decimals": {"a": "5.5", "b": "3.3", "expected": "2.2"},
+    }
+    invalid_test_cases = {}  # Abs_Diff has no invalid cases
 
 class TestOperationFactory:
     """Test OperationFactory functionality."""
@@ -194,6 +269,10 @@ class TestOperationFactory:
             'divide': Division,
             'power': Power,
             'root': Root,
+            'modulus': Modulus,
+            'int_divide': Int_Divide,
+            'percent': Percent,
+            'abs_diff': Abs_Diff,
         }
 
         for op_name, op_class in operation_map.items():
