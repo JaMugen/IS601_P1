@@ -261,7 +261,7 @@ Calculator started. Type 'help' for commands.
 Enter command: help
 
 Available commands:
-   add, subtract, multiply, divide, power, root - Perform calculations
+   add, subtract, multiply, divide, power, modulus, int_divide, percent, abs_diff - Perform calculations
    history - Show calculation history
    clear - Clear calculation history
    undo - Undo the last calculation
