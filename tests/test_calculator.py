@@ -426,7 +426,7 @@ def test_calculator_repl_decimal_normalization(mock_print, mock_input):
     mock_print.assert_any_call("\nResult: 5")
 
 @pytest.mark.parametrize("operation", [
-    'add', 'subtract', 'multiply', 'divide', 'power', 'root'
+    'add', 'subtract', 'multiply', 'divide', 'power', 'root', 'modulus', 'int_divide', 'percent', 'abs_diff'
 ])
 def test_calculator_repl_first_input_cancel(monkeypatch, operation):
     """
@@ -442,7 +442,7 @@ def test_calculator_repl_first_input_cancel(monkeypatch, operation):
 
 
 @pytest.mark.parametrize("operation", [
-    'add', 'subtract', 'multiply', 'divide', 'power', 'root'
+    'add', 'subtract', 'multiply', 'divide', 'power', 'root', 'modulus', 'int_divide', 'percent', 'abs_diff'
 ])
 def test_calculator_repl_second_input_cancel(monkeypatch, operation):
     """
