@@ -395,3 +395,22 @@ class Calculator:
         # Restore the history from the memento
         self.history = memento.history.copy()
         return True
+    
+    def get_prompt_color(self) -> Any:
+        """
+        Get the prompt color from configuration.
+
+        Returns:
+            Any: The colorama Fore color for prompts.
+        """
+        return self.config.get_prompt_color()
+    
+
+    def get_result_color(self) -> Any:
+        """
+        Get the result color from configuration.
+
+        Returns:
+            Any: The colorama Fore color for results.
+        """
+        return self.config.get_result_color()
