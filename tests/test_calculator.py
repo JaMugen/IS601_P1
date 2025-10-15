@@ -463,13 +463,14 @@ def test_calculator_repl_addition(mock_print, mock_input):
                
 
 
-def test_calculator_rep_add_exception():
+@pytest.mark.parametrize("operation", ['add', 'subtract', 'multiply', 'divide', 'power', 'root', 'modulus', 'int_divide', 'percent', 'abs_diff'])
+def test_calculator_repl_operation_unexpected_exception(operation):
+    """Ensure the REPL prints the unexpected-error message for any operation when perform_operation raises."""
     with patch('app.calculator.Calculator.perform_operation', side_effect=Exception("test")):
-        with patch('builtins.input', side_effect=['add', '2', '3', 'exit']):
+        with patch('builtins.input', side_effect=[operation, '2', '3', 'exit']):
             with patch('builtins.print') as mock_print:
                 calculator_repl()
                 mock_print.assert_any_call("Unexpected error: test")
-
     
 def test_calculator_repl_validation_exception():
     with patch('builtins.input', side_effect=['add', 'invalid', '3', 'exit']):
