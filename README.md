@@ -228,9 +228,9 @@ Then submit the GitHub repository link as instructed.
 
 ---
 
-# 8. Eviroment configuration
+# 8. Environment configuration
 
-To change calculator default configurations setup an enviroment file. The enviroment file is called .env. Values that can be set are shown in the following example.
+To change calculator default configurations setup an environment file. The environment file is called .env. Values that can be set are shown in the following example.
 
 ```env
 # Location of the calculator directory.
@@ -250,6 +250,11 @@ CALCULATOR_MAX_INPUT_VALUE=1e999
 
 # Default encoding for file operations
 CALCULATOR_DEFAULT_ENCODING=utf-8
+
+# Foreground colors used by the REPL prompt and result output
+# Valid values: black, red, green, yellow, blue, magenta, cyan, white
+CALCULATOR_PROMPT_COLOR=magenta
+CALCULATOR_RESULT_COLOR=cyan
 
 ```
 ---
