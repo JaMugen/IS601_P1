@@ -471,9 +471,10 @@ def test_calculator_repl_operation_unexpected_exception(operation):
             with patch('builtins.print') as mock_print:
                 calculator_repl()
                 mock_print.assert_any_call("Unexpected error: test")
-    
-def test_calculator_repl_validation_exception():
-    with patch('builtins.input', side_effect=['add', 'invalid', '3', 'exit']):
+
+@pytest.mark.parametrize("operation", ['add', 'subtract', 'multiply', 'divide', 'power', 'root', 'modulus', 'int_divide', 'percent', 'abs_diff'])
+def test_calculator_repl_validation_exception(operation):
+    with patch('builtins.input', side_effect=[operation, 'invalid', '3', 'exit']):
         with patch('builtins.print') as mock_print:
             calculator_repl()
             mock_print.assert_any_call("Error: Invalid number format: invalid")
