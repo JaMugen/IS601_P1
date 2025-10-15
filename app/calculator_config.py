@@ -13,6 +13,7 @@ from dotenv import load_dotenv
 
 from app.exceptions import ConfigurationError
 
+from colorama import Fore
 # Load environment variables from a .env file into the program's environment
 load_dotenv()
 
@@ -45,6 +46,17 @@ class CalculatorConfig:
     Configuration can be set via environment variables or by passing parameters
     directly to the class constructor.
     """
+    foreground_color_map = {
+        'black': Fore.BLACK,
+        'red': Fore.RED,
+        'green': Fore.GREEN,
+        'yellow': Fore.YELLOW,
+        'blue': Fore.BLUE,
+        'magenta': Fore.MAGENTA,
+        'cyan': Fore.CYAN,
+        'white': Fore.WHITE,
+        'reset': Fore.RESET
+    }
 
     def __init__(
         self,
@@ -53,7 +65,9 @@ class CalculatorConfig:
         auto_save: Optional[bool] = None,
         precision: Optional[int] = None,
         max_input_value: Optional[Number] = None,
-        default_encoding: Optional[str] = None
+        default_encoding: Optional[str] = None,
+        prompt_color: Optional[str] = None,
+        result_color: Optional[str] = None
     ):
         """
         Initialize configuration with environment variables and defaults.
@@ -97,6 +111,14 @@ class CalculatorConfig:
         self.default_encoding = default_encoding or os.getenv(
             'CALCULATOR_DEFAULT_ENCODING', 'utf-8'
         )
+
+        # Prompt color
+        prompt_color_env = os.getenv('CALCULATOR_PROMPT_COLOR', 'magenta').lower()
+        self.prompt_color = self.foreground_color_map.get(prompt_color_env)
+
+        # Result color
+        result_color_env = os.getenv('CALCULATOR_RESULT_COLOR', 'cyan').lower()
+        self.result_color = self.foreground_color_map.get(result_color_env)
 
     @property
     def log_dir(self) -> Path:
@@ -158,6 +180,25 @@ class CalculatorConfig:
             str(self.log_dir / "calculator.log")
         )).resolve()
 
+
+    def get_prompt_color(self) -> str:
+        """
+        Get the color code for the prompt.
+
+        Returns:
+            str: The ANSI color code for the prompt.
+        """
+        return self.prompt_color or Fore.BLACK
+    
+    def get_result_color(self) -> str:
+        """
+        Get the color code for the result.
+
+        Returns:
+            str: The ANSI color code for the result.
+        """
+        return self.result_color or Fore.BLACK
+
     def validate(self) -> None:
         """
         Validate configuration settings.
@@ -174,3 +215,7 @@ class CalculatorConfig:
             raise ConfigurationError("precision must be positive")
         if self.max_input_value <= 0:
             raise ConfigurationError("max_input_value must be positive")
+        if self.prompt_color is None:
+            raise ConfigurationError("Invalid prompt_color specified")
+        if self.result_color is None:
+            raise ConfigurationError("Invalid result_color specified")
