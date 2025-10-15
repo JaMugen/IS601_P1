@@ -1,3 +1,4 @@
+from colorama import Fore
 import pytest
 import os
 from decimal import Decimal
@@ -15,6 +16,8 @@ os.environ['CALCULATOR_LOG_DIR'] = './test_logs'
 os.environ['CALCULATOR_HISTORY_DIR'] = './test_history'
 os.environ['CALCULATOR_HISTORY_FILE'] = './test_history/test_history.csv'
 os.environ['CALCULATOR_LOG_FILE'] = './test_logs/test_log.log'
+os.environ['CALCULATOR_PROMPT_COLOR'] = 'green'
+os.environ['CALCULATOR_RESULT_COLOR'] = 'cyan'
 
 # Helper function to clear specific environment variables
 def clear_env_vars(*args):
@@ -144,3 +147,21 @@ def test_history_file_property():
     config = CalculatorConfig(base_dir=Path('/new_base_dir'))
     assert config.history_file == Path('/new_base_dir/history/calculator_history.csv').resolve()
 
+def test_prompt_and_result_colors():
+    config = CalculatorConfig()
+    assert config.prompt_color is Fore.GREEN
+    assert config.result_color is Fore.CYAN
+
+def test_invalid_prompt_color_configuration():
+    os.environ['CALCULATOR_PROMPT_COLOR'] = 'invalid_color'
+    with pytest.raises(ConfigurationError, match="Invalid prompt_color specified"):
+        config = CalculatorConfig()
+        config.validate() # This should raise an error due to invalid color
+    os.environ['CALCULATOR_PROMPT_COLOR'] = 'green' 
+
+def test_invalid_result_color_configuration():
+    os.environ['CALCULATOR_RESULT_COLOR'] = 'invalid_color'
+    with pytest.raises(ConfigurationError, match="Invalid result_color specified"):
+        config = CalculatorConfig()
+        config.validate() # This should raise an error due to invalid color
+    os.environ['CALCULATOR_RESULT_COLOR'] = 'cyan' 
