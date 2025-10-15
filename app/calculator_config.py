@@ -55,7 +55,6 @@ class CalculatorConfig:
         'magenta': Fore.MAGENTA,
         'cyan': Fore.CYAN,
         'white': Fore.WHITE,
-        'reset': Fore.RESET
     }
 
     def __init__(
