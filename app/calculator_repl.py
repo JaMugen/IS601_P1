@@ -2,6 +2,7 @@
 # Calculator REPL       #
 ########################
 
+from calendar import c
 from decimal import Decimal
 import logging
 
@@ -9,6 +10,8 @@ from app.calculator import Calculator
 from app.exceptions import OperationError, ValidationError
 from app.history import AutoSaveObserver, LoggingObserver
 from app.operations import OperationFactory
+
+from colorama import init, Fore, Style
 
 
 def calculator_repl():
@@ -19,6 +22,8 @@ def calculator_repl():
     for commands, processes arithmetic operations, and manages calculation history.
     """
     try:
+        init()  # Initialize colorama for colored terminal output
+
         # Initialize the Calculator instance
         calc = Calculator()
 
@@ -26,13 +31,15 @@ def calculator_repl():
         calc.add_observer(LoggingObserver())
         calc.add_observer(AutoSaveObserver(calc))
 
+        print(calc.get_prompt_color())
         print("Calculator started. Type 'help' for commands.")
 
         while True:
             try:
                 # Prompt the user for a command
+                print(calc.get_prompt_color(), end='')  # Set prompt color
                 command = input("\nEnter command: ").lower().strip()
-
+                print(calc.get_result_color(), end='')  # Set result color
                 if command == 'help':
                     # Display available commands
                     print("\nAvailable commands:")
